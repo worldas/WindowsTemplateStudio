@@ -7,11 +7,7 @@ namespace RootNamespace
     {
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            var navigationService = new Services.NavigationService();
-            SimpleIoc.Default.Register(() => navigationService);
-            
+            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);            
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿public ViewModelLocator()
 {
     //^^         
-    Registeruct.ItemName(navigationService);
+    Registeruct.ItemName();
 }

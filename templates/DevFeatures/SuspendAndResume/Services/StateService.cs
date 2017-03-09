@@ -60,6 +60,7 @@ namespace ItemNamespace.Services
 
         private void NavigateToPage(Type page, string arguments)
         {
+            NavigationService.Navigate(page, arguments);
         }
 
         //TODO UWPTEMPLATES: Subscribe to this event in pages in OnNavigatedTo event handler
@@ -101,6 +102,6 @@ namespace ItemNamespace.Services
                 this.PageState = pageState;
                 this.Page = page;
             }
-        }
+        }        
     }
 }

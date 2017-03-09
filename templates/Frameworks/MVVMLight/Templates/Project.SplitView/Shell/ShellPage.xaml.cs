@@ -26,13 +26,11 @@ namespace uct.ItemName.Shell
     /// </summary>
     public sealed partial class ShellPage : Page
     {
-        private NavigationService navigationService => ServiceLocator.Current.GetInstance<NavigationService>();
-
         public ShellPage()
         {
             this.InitializeComponent();
 
-            navigationService.SetNavigationFrame(frame);
+            NavigationService.SetNavigationFrame(frame);
         }
 
         private void OnItemClick(object sender, ItemClickEventArgs e)
@@ -40,7 +38,7 @@ namespace uct.ItemName.Shell
             var navigationItem = e.ClickedItem as ShellNavigationItem;
             if (navigationItem != null)
             {
-                navigationService.Navigate(navigationItem.ViewModelName);
+                NavigationService.Navigate(navigationItem.PageType);
             }
         }
 
@@ -48,11 +46,11 @@ namespace uct.ItemName.Shell
         {
             if (e.Parameter == null || String.IsNullOrEmpty(e.Parameter.ToString()))
             {
-                navigationService.Navigate(typeof(HomeViewModel).FullName);
+                NavigationService.Navigate<HomePage>();
             }
             else
             {
-                  navigationService.Navigate(e.Parameter.ToString());
+                  NavigationService.Navigate((Type)e.Parameter);
             }
         }
 
@@ -62,7 +60,7 @@ namespace uct.ItemName.Shell
 
             if (viewModel != null)
             {
-                var item = viewModel.NavigationItems.FirstOrDefault(i => i.ViewModelName == navigationService.GetViewModel(e.SourcePageType));
+                var item = viewModel.NavigationItems.FirstOrDefault(i => i.PageType == e.SourcePageType);
                 if (item != null)
                 {
                     viewModel.SelectedItem = item;

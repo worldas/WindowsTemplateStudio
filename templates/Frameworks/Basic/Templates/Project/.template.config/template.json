@@ -20,9 +20,6 @@
   "preferNameDirectory": true,
   "PrimaryOutputs": [
     {
-      "path": ".\\Services\\NavigationService.cs"
-    },
-    {
       "path": ".\\_Mvvm\\Observable.cs"
     },
     {

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "HockeySDK.UWP": "4.1.6",
+  },
+}

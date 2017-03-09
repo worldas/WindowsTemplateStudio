@@ -12,10 +12,10 @@
     "uct.type": "devfeature",
     "uct.framework": "Basic;MVVMLight",
     "uct.version": "1.0.0",
-    "uct.order": "1",
+    "uct.order": "1",    
     "uct.licences": "[Newtonsoft.Json](https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md)",
     "uct.multipleInstance": "false",
-    "uct.dependencies":"Microsoft.UWPTemplates.SettingsStorageFeature.CSharp"
+    "uct.dependencies":"Microsoft.UWPTemplates.SettingsStorageFeature.CSharp|Microsoft.UWPTemplates.NavigationFeature.CSharp"    
   },
   "sourceName": "SuspendAndResumeFeature",
   "preferNameDirectory": true,

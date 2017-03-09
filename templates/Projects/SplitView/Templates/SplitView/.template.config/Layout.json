@@ -5,6 +5,11 @@
         "readonly": "true"
     },
     {
+        "name": "Navigation",
+        "templateIdentity": "Microsoft.UWPTemplates.NavigationFeature.CSharp",
+        "readonly": "true"
+    },
+    {
         "name": "en-us",
         "templateIdentity": "Microsoft.UWPTemplates.Localization.CSharp",
         "readonly": "false"

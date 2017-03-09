@@ -1,6 +1,5 @@
 using Microsoft.Practices.ServiceLocation;
 using GalaSoft.MvvmLight.Ioc;
-using RootNamespace.Services;
 using RootNamespace.uct.ItemName;
 
 namespace RootNamespace
@@ -9,10 +8,6 @@ namespace RootNamespace
     {
         public uct.ItemNameViewModel uct.ItemNameViewModel => ServiceLocator.Current.GetInstance<uct.ItemNameViewModel>();
 
-        public void Registeruct.ItemName(NavigationService navigationService)
-        {
-            SimpleIoc.Default.Register<uct.ItemNameViewModel>();
-            navigationService.Configure(typeof(uct.ItemNameViewModel).FullName, typeof(uct.ItemNamePage));
-        }
+        public void Registeruct.ItemName() => SimpleIoc.Default.Register<uct.ItemNameViewModel>();
     }
 }
