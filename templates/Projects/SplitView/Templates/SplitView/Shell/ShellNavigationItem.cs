@@ -1,8 +1,7 @@
-﻿using System;
-
+using System;
 using Windows.UI.Xaml.Controls;
 
-namespace uct.ItemName.Shell
+namespace uct.SplitViewProject.Shell
 {
     public class ShellNavigationItem
     {

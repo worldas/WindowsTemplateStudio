@@ -18,10 +18,7 @@
   },
   "sourceName": "uct.ItemName",
   "preferNameDirectory": true,
-  "PrimaryOutputs": [
-    {
-      "path": ".\\Shell\\ShellNavigationItem.cs"
-    },
+  "PrimaryOutputs": [    
     {
       "path": ".\\Shell\\ShellPage.xaml"
     },
