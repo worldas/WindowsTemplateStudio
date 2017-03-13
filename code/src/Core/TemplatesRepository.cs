@@ -23,9 +23,7 @@ namespace Microsoft.Templates.Core
 
     public class TemplatesRepository
     {
-
-        public event Action<object, SyncStatus> Sync;
-
+        public event Action<object, SyncStatus> SyncStatusChanged;
 
         private static readonly string FolderName = Configuration.Current.RepositoryFolderName;
 
@@ -54,11 +52,17 @@ namespace Microsoft.Templates.Core
                 await AdquireContentAsync();
             }
         }
+
+        public string GetVersion()
+        {
+            return _location.GetVersion(WorkingFolder);
+        }
+
         private async Task AdquireContentAsync()
         {
-            Sync?.Invoke(this, SyncStatus.Adquiring);
+            SyncStatusChanged?.Invoke(this, SyncStatus.Adquiring);
             await Task.Run(() => AdquireContent());
-            Sync?.Invoke(this, SyncStatus.Adquired);
+            SyncStatusChanged?.Invoke(this, SyncStatus.Adquired);
         }
 
         private void AdquireContent()
@@ -75,9 +79,9 @@ namespace Microsoft.Templates.Core
 
         private async Task UpdateContentAsync()
         {
-            Sync?.Invoke(this, SyncStatus.Updating);
+            SyncStatusChanged?.Invoke(this, SyncStatus.Updating);
             await Task.Run(() => UpdateContent());
-            Sync?.Invoke(this, SyncStatus.Updated);
+            SyncStatusChanged?.Invoke(this, SyncStatus.Updated);
         }
 
         private void UpdateContent()

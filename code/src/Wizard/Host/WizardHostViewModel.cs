@@ -1,12 +1,14 @@
 ﻿using Microsoft.Templates.Core;
 using Microsoft.Templates.Core.Diagnostics;
 using Microsoft.Templates.Core.Extensions;
+using Microsoft.Templates.Core.Gen;
 using Microsoft.Templates.Core.Mvvm;
 using Microsoft.Templates.Wizard.Resources;
 using Microsoft.Templates.Wizard.Steps;
 using Microsoft.Templates.Wizard.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -23,12 +25,12 @@ namespace Microsoft.Templates.Wizard.Host
         public WizardHost Host { get; }
         public WizardSteps Steps { get; }
 
-        public WizardHostViewModel(WizardHost host, WizardSteps steps, TemplatesRepository templatesRepository, GenShell shell)
+        public WizardHostViewModel(WizardHost host, WizardSteps steps)
         {
             //TODO: VERIFY NOT NULL
             Host = host;
             Steps = steps;
-            _context = new WizardContext(templatesRepository, shell);
+            _context = new WizardContext();
 
             _context.PropertyChanged += _context_PropertyChanged;
 
@@ -41,7 +43,7 @@ namespace Microsoft.Templates.Wizard.Host
 
         public async Task IniatializeAsync()
         {
-            _context.TemplatesRepository.Sync += (sender, status) =>
+            GenContext.ToolBox.Repo.SyncStatusChanged += (sender, status) =>
             {
                 Status = GetStatusText(status);
 
@@ -56,8 +58,12 @@ namespace Microsoft.Templates.Wizard.Host
 
             try
             {
-                await _context.TemplatesRepository.SynchronizeAsync();
+                WizardVersion = GetWizardVersion();
+
+                await GenContext.ToolBox.Repo.SynchronizeAsync();
                 Status = string.Empty;
+
+                TemplatesVersion = GenContext.ToolBox.Repo.GetVersion();
             }
             catch (Exception ex)
             {
@@ -66,6 +72,14 @@ namespace Microsoft.Templates.Wizard.Host
                 await AppHealth.Current.Error.TrackAsync(ex.ToString());
                 await AppHealth.Current.Exception.TrackAsync(ex);
             }
+        }
+
+        private string GetWizardVersion()
+        {
+            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            var versionInfo = FileVersionInfo.GetVersionInfo(assemblyLocation);
+
+            return versionInfo.FileVersion;
         }
 
         private string GetStatusText(SyncStatus status)
@@ -90,6 +104,20 @@ namespace Microsoft.Templates.Wizard.Host
         {
             get { return _status; }
             set { SetProperty(ref _status, value); }
+        }
+
+        private string _wizardVersion;
+        public string WizardVersion
+        {
+            get { return _wizardVersion; }
+            set { SetProperty(ref _wizardVersion, value); }
+        }
+
+        private string _templatesVersion;
+        public string TemplatesVersion
+        {
+            get { return _templatesVersion; }
+            set { SetProperty(ref _templatesVersion, value); }
         }
 
         private string _stepTitle;
@@ -119,8 +147,8 @@ namespace Microsoft.Templates.Wizard.Host
 
             Host.StepsFrame.Navigate(nextStep.GetPage());
 
-            OnPropertyChanged("PreviousCommand");
-            OnPropertyChanged("NextCommand");
+            OnPropertyChanged(nameof(PreviousCommand));
+            OnPropertyChanged(nameof(NextCommand));
 
             if (Steps.CanGoForward())
             {
@@ -142,7 +170,7 @@ namespace Microsoft.Templates.Wizard.Host
         {
             if (e.PropertyName == nameof(_context.CanGoForward))
             {
-                OnPropertyChanged("NextCommand");
+                OnPropertyChanged(nameof(NextCommand));
             }
         }
 
