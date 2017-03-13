@@ -67,7 +67,7 @@ namespace uct.SplitViewProject
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(ShellPage), e.Arguments);
+                    Services.NavigationService.Navigate<ShellPage>();
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

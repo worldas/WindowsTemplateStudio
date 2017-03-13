@@ -35,35 +35,10 @@ namespace uct.ItemName.Shell
 
         public ShellViewModel ViewModel { get; private set; }
 
-        private void OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            var navigationItem = e.ClickedItem as ShellNavigationItem;
-            if (navigationItem != null)
-            {
-                NavigationService.Navigate(navigationItem.PageType);
-            }
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter == null || String.IsNullOrEmpty(e.Parameter.ToString()))
-            {
-                NavigationService.Navigate<HomePage>();
-            }
-            else
-            {
-                NavigationService.Navigate((Type)e.Parameter);
-            }
-        }
-
-        private void frame_Navigated(object sender, NavigationEventArgs e)
-        {
-            var item = ViewModel.NavigationItems.FirstOrDefault(i => i.PageType == e.SourcePageType);
-            if (item != null)
-            {
-                ViewModel.SelectedItem = item;
-                return;
-            }
+            base.OnNavigatedTo(e);
+            ViewModel.InitializeNavigationItems(e.Parameter);
         }
     }
 }

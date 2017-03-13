@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using uct.ItemName.Services;
 
 namespace uct.ItemName.Shell
 {
@@ -23,7 +24,11 @@ namespace uct.ItemName.Shell
         public ShellNavigationItem SelectedItem
         {
             get { return _selectedItem; }
-            set { Set(ref _selectedItem, value); }
+            set
+            {
+                Set(ref _selectedItem, value);
+                NavigateToItem(value);
+            }
         }
         #endregion
 
@@ -42,7 +47,6 @@ namespace uct.ItemName.Shell
 
             //More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             //Edit String/en-US/Resources.resw: Add a menu item title for each page
-            SelectedItem = NavigationItems.FirstOrDefault();
         }
 
 
@@ -61,5 +65,20 @@ namespace uct.ItemName.Shell
             }
         }
         #endregion
+
+        public void InitializeNavigationItems(object parameter)
+        {
+            Type pageType = typeof(HomePage);
+            if (parameter != null && !String.IsNullOrEmpty(parameter.ToString()))
+            {
+                if (parameter is Type)
+                {
+                    pageType = parameter as Type;
+                }
+            }
+            SelectedItem = NavigationItems.FirstOrDefault(i => i.PageType == pageType);
+        }
+
+        private void NavigateToItem(ShellNavigationItem navigationItem) => NavigationService.Navigate(navigationItem?.PageType);
     }
 }
